@@ -6,8 +6,8 @@
 class Light
 {
 public:
-    Light() = default;
     Light(const Point pos);
+    ~Light() = default;
 
 private:
     Point pos;

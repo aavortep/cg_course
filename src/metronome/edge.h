@@ -6,11 +6,11 @@
 class Edge
 {
 public:
-    Edge() = default;
-    Edge(const Point a, const Point b);
+    Edge(const int ind_1, const int ind_2);
+    ~Edge() = default;
 
 private:
-    Point a, b;
+    int ind_1, ind_2;
 };
 
 #endif // EDGE_H

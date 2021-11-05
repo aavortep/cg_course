@@ -1,6 +1,6 @@
 #include "light.h"
 
-/*Light::Light()
+Light::Light(const Point pos)
 {
-
-}*/
+    this->pos = pos;
+}

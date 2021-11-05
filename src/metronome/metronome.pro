@@ -1,8 +1,11 @@
 QT       += core gui
+QT += gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+
+INCLUDEPATH += "/mingw64/include/c++/11.2.0/"
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
