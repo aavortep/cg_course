@@ -23,12 +23,39 @@ int Point::get_z() const
     return this->z;
 }
 
+void Point::set_x(const int x)
+{
+    this->x = x;
+}
+
+void Point::set_y(const int y)
+{
+    this->y = y;
+}
+
+void Point::set_z(const int z)
+{
+    this->z = z;
+}
+
 Point& Point::operator = (const Point &pt)
 {
     this->x = pt.x;
     this->y = pt.y;
     this->z = pt.z;
     return *this;
+}
+
+int& Point::operator [] (const int index)
+{
+    if (index == 0)
+        return this->x;
+    else if (index == 1)
+        return this->y;
+    else if (index == 2)
+        return this->z;
+    else
+        return INDEX_FAIL;
 }
 
 void Point::move(const int dx, const int dy, const int dz)

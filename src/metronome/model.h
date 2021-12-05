@@ -14,14 +14,17 @@ class Body : public QObject
     Q_OBJECT
 
 public:
-    Body(vector<Point> pts, vector<Edge> edges);
+    Body(Point& center, QString& filename, QColor& color);
     ~Body();
 
     void scale(const double kx, const double ky, const double kz);
 
 private:
-    vector<Point> points;
-    vector<Edge> edges;
+    vector<Point> points, norms;
+    vector<vector<Point>> faces;
+
+    Point center;
+    QColor color;
 };
 
 
@@ -30,7 +33,7 @@ class Pendulum : public QObject
     Q_OBJECT
 
 public:
-    Pendulum(vector<Point> pts, vector<Edge> edges);
+    Pendulum(Point& center, QString& filename, QColor& color);
     ~Pendulum();
 
     void scale(const double kx, const double ky, const double kz);
@@ -46,8 +49,11 @@ signals:
     void stop();
 
 private:
-    vector<Point> points;
-    vector<Edge> edges;
+    vector<Point> points, norms;
+    vector<vector<Point>> faces;
+
+    Point center;
+    QColor color;
 
     enum model_state
     {

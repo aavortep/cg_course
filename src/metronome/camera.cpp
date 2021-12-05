@@ -1,8 +1,9 @@
 #include "camera.h"
 
-Camera::Camera(const Point pos)
+Camera::Camera(const Point &pos, const Point &dir)
 {
     this->pos = pos;
+    this->dir = dir;
 }
 
 void Camera::move(const int dx, const int dy, const int dz)

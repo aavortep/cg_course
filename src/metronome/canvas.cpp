@@ -20,20 +20,8 @@ void Canvas::update()
     this->setPixmap(QPixmap::fromImage(image));
 }
 
-void Canvas::clear_image()
+void Canvas::clear()
 {
     image.fill(QColor("white"));
-    update();
-}
-
-void Canvas::set_color(const QColor &color)
-{
-    brush_color = color;
-}
-
-void Canvas::draw_point(const Point &pt)
-{
-    const QPoint qpt(pt.get_x(), pt.get_y());
-    image.setPixelColor(qpt, pen_color);
     update();
 }

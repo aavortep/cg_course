@@ -1,6 +1,8 @@
 #ifndef POINT_H
 #define POINT_H
 
+#define INDEX_FAIL -1000
+
 class Point
 {
 public:
@@ -12,7 +14,12 @@ public:
     int get_y() const;
     int get_z() const;
 
+    void set_x(const int x);
+    void set_y(const int y);
+    void set_z(const int z);
+
     Point& operator= (const Point &pt);
+    int& operator[] (const int index);
 
     void move(const int dx, const int dy, const int dz);
     void scale(const double kx, const double ky, const double kz);
