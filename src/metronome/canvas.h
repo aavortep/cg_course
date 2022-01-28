@@ -7,6 +7,9 @@
 #include "model.h"
 #include "light.h"
 #include "camera.h"
+#include "matrix.h"
+
+#define FAULT 500
 
 class Scene
 {
@@ -20,8 +23,8 @@ public:
     Scene();
 
     // модель
-    void set_body(const Body &body);
-    void set_pendulum(const Pendulum &pend);
+    void set_body(const Point center);
+    void set_pendulum(const Point center);
     Body& get_body();
     Pendulum& get_pendulum();
 
@@ -29,11 +32,12 @@ public:
 
     // свет
     void set_light(const Point &pos, const float power);
-    Point& get_light();
+    Light& get_light();
 
     // камера
     void set_camera(const Point &pos, const Point &dir);
-    Point& get_camera();
+    Point& get_camera_pos();
+    Point& get_camera_view();
 
     void move_camera(const int dx, const int dy, const int dz);
     void rotate_camera(const double fi_x, const double fi_y, const double fi_z);
@@ -80,12 +84,8 @@ public:
     void set_light(const Point &pos, const float power);
 
     // камера
-    void set_camera(const Point &pos, const Point &dir);
-
     void move_camera(const int dx, const int dy, const int dz);
     void rotate_camera(const double fi_x, const double fi_y, const double fi_z);
-
-    float process_light(const Point &vert, const Point &norm);
 
 private:
     int width = 1431, height = 971;
@@ -96,23 +96,31 @@ private:
     void clear();
     void update();
 
+    void update_screen();
+    void clear_screen();
+
     ZBuffer zbuffer;
     void init_zbuffer();
     void clear_zbuffer();
 
-    vector<vector<QColor>> colorCache;
+    vector<vector<QColor>> color_cache;
     void init_color_cache();
     void clear_color_cache();
 
     void process_body(Body &body, Point &cam_pos, Point &cam_dir);
+    void process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir);
     void process_triangle(Point &v1, Point &v2, Point &v3, const QColor &color,
                           float &i1, float &i2, float &i3);
+    float process_light(const Point &vert, const Point &norm);
 
+    int wPerm, hPerm;
     bool is_visible(const Point &pt);
 
     QColor bg_color = QColor(94, 115, 107);
     QColor pen_color, brush_color;
     QPen pen;
 };
+
+inline QRgb iColor(const QRgb& a, const float& i);
 
 #endif // CANVAS_H

@@ -17,6 +17,9 @@ public:
     Body(Point& center, QString& filename, QColor& color);
     ~Body();
 
+    void set_center(Point& center);
+    Point& get_center();
+
     void scale(const double kx, const double ky, const double kz);
 
 private:
@@ -35,6 +38,9 @@ class Pendulum : public QObject
 public:
     Pendulum(Point& center, QString& filename, QColor& color);
     ~Pendulum();
+
+    void set_center(Point& center);
+    Point& get_center();
 
     void scale(const double kx, const double ky, const double kz);
 

@@ -2,6 +2,8 @@
 #define LIGHT_H
 
 #include "point.h"
+#define LIGHT_REFLECT 1
+#define BG_LIGHT 0.3
 
 class Light
 {

@@ -22,6 +22,7 @@ SOURCES += \
     light.cpp \
     main.cpp \
     mainwindow.cpp \
+    matrix.cpp \
     model.cpp \
     point.cpp
 
@@ -31,6 +32,7 @@ HEADERS += \
     edge.h \
     light.h \
     mainwindow.h \
+    matrix.h \
     model.h \
     point.h
 

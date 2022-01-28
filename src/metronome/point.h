@@ -19,6 +19,7 @@ public:
     void set_z(const int z);
 
     Point& operator= (const Point &pt);
+    Point& operator- (const Point &pt);
     int& operator[] (const int index);
 
     void move(const int dx, const int dy, const int dz);

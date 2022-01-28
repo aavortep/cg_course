@@ -46,6 +46,14 @@ Point& Point::operator = (const Point &pt)
     return *this;
 }
 
+Point& Point::operator - (const Point &pt)
+{
+    this->x = this->x - pt.x;
+    this->y = this->y - pt.y;
+    this->z = this->z - pt.z;
+    return *this;
+}
+
 int& Point::operator [] (const int index)
 {
     if (index == 0)
