@@ -23,8 +23,8 @@ public:
     Scene();
 
     // модель
-    void set_body(const Point center);
-    void set_pendulum(const Point center);
+    void set_body(const Body& body);
+    void set_pendulum(const Pendulum& pendulum);
     Body& get_body();
     Pendulum& get_pendulum();
 

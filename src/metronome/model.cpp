@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Body::Body(Point& center, QString& filename, QColor& color) : center(center), color(color)
+Body::Body(QString& filename, QColor& color, Point& center) : center(center), color(color)
 {
     ifstream in;  // файл
 
@@ -62,13 +62,106 @@ Body::~Body()
     this->faces.clear();
 }
 
+void Body::set_center(const Point &center)
+{
+    this->center = center;
+}
+
+Point& Body::get_center()
+{
+    return this->center;
+}
+
+int Body::get_verts_cnt()
+{
+    return points.size();
+}
+
+Point& Body::vert(const int& idx)
+{
+    return points[idx];
+}
+
+int Body::get_faces_cnt()
+{
+    return this->faces.size();
+}
+
+vector<int> Body::face(const int &idx)
+{
+    vector<int> face;
+    size_t size = faces[idx].size();
+
+    for (size_t i = 0; i < size; i++)
+        face.push_back(faces[idx][i][0]);
+
+    return face;
+}
+
+int Body::get_norms_cnt()
+{
+    return norms.size();
+}
+
+void Body::set_norm(const int &iface, const int &nvert, const Point &n)
+{
+    int idx = faces[iface][nvert][2];
+    norms[idx] = n;
+}
+
+Point& Body::norm(const int &iface, const int &nvert)
+{
+    int idx = faces[iface][nvert][2];
+    return norms[idx].normalize();
+}
+
+Point Body::norm_calc(const Point& a, const Point& b, const Point& c)
+{
+    Point n = (c - a) ^ (b - a);
+    return n;
+}
+
+void Body::norms_processing()
+{
+    size_t nface = faces.size();
+
+    for (size_t i = 0; i < nface; i++)
+    {
+        std::vector<int> f = face(i);
+
+        set_norm(i, 0, norm_calc(vert(f[0]), vert(f[1]), vert(f[2])));
+        set_norm(i, 1, norm_calc(vert(f[1]), vert(f[2]), vert(f[0])));
+        set_norm(i, 2, norm_calc(vert(f[2]), vert(f[0]), vert(f[1])));
+    }
+}
+
+QColor& Body::get_color()
+{
+    return this->color;
+}
+
+void Body::set_color(const QColor& color)
+{
+    this->color = color;
+}
+
 void Body::scale(const double kx, const double ky, const double kz)
 {
     for (size_t i = 0; i < this->points.size(); ++i)
         this->points[i].scale(kx, ky, kz);
 }
 
-Pendulum::Pendulum(Point& center, QString& filename, QColor& color) : center(center), color(color)
+Body& Body::operator = (const Body &body)
+{
+    this->points = body.points;
+    this->norms = body.norms;
+    this->faces = body.faces;
+    this->center = body.center;
+    this->color = body.color;
+    return *this;
+}
+
+Pendulum::Pendulum(QString& filename, QColor& color, Point& center) : center(center), color(color)
 {
     ifstream in;  // файл
 
@@ -127,6 +220,99 @@ Pendulum::~Pendulum()
     this->points.clear();
     this->norms.clear();
     this->faces.clear();
+}
+
+void Pendulum::set_center(const Point &center)
+{
+    this->center = center;
+}
+
+Point& Pendulum::get_center()
+{
+    return this->center;
+}
+
+int Pendulum::get_verts_cnt()
+{
+    return points.size();
+}
+
+Point& Pendulum::vert(const int& idx)
+{
+    return points[idx];
+}
+
+int Pendulum::get_faces_cnt()
+{
+    return this->faces.size();
+}
+
+vector<int> Pendulum::face(const int &idx)
+{
+    vector<int> face;
+    size_t size = faces[idx].size();
+
+    for (size_t i = 0; i < size; i++)
+        face.push_back(faces[idx][i][0]);
+
+    return face;
+}
+
+int Pendulum::get_norms_cnt()
+{
+    return norms.size();
+}
+
+void Pendulum::set_norm(const int &iface, const int &nvert, const Point &n)
+{
+    int idx = faces[iface][nvert][2];
+    norms[idx] = n;
+}
+
+Point& Pendulum::norm(const int &iface, const int &nvert)
+{
+    int idx = faces[iface][nvert][2];
+    return norms[idx].normalize();
+}
+
+Point Pendulum::norm_calc(const Point& a, const Point& b, const Point& c)
+{
+    Point n = (c - a) ^ (b - a);
+    return n;
+}
+
+void Pendulum::norms_processing()
+{
+    size_t nface = faces.size();
+
+    for (size_t i = 0; i < nface; i++)
+    {
+        std::vector<int> f = face(i);
+
+        set_norm(i, 0, norm_calc(vert(f[0]), vert(f[1]), vert(f[2])));
+        set_norm(i, 1, norm_calc(vert(f[1]), vert(f[2]), vert(f[0])));
+        set_norm(i, 2, norm_calc(vert(f[2]), vert(f[0]), vert(f[1])));
+    }
+}
+
+QColor& Pendulum::get_color()
+{
+    return this->color;
+}
+
+void Pendulum::set_color(const QColor& color)
+{
+    this->color = color;
+}
+
+Pendulum& Pendulum::operator = (const Pendulum &pend)
+{
+    this->points = pend.points;
+    this->norms = pend.norms;
+    this->faces = pend.faces;
+    this->center = pend.center;
+    this->color = pend.color;
+    return *this;
 }
 
 bool Pendulum::is_running()

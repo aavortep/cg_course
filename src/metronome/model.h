@@ -14,15 +14,34 @@ class Body : public QObject
     Q_OBJECT
 
 public:
-    Body(Point& center, QString& filename, QColor& color);
+    Body(QString& filename = QString("model/body.obj"), QColor& color = QColor(0, 0, 0),
+         Point& center = Point(0, 0, 0));
     ~Body();
 
-    void set_center(Point& center);
+    void set_center(const Point& center);
     Point& get_center();
+
+    int get_verts_cnt();
+    Point& vert(const int&);
+
+    int get_faces_cnt();
+    vector<int> face(const int&);
+
+    int get_norms_cnt();
+    void set_norm(const int&, const int&, const Point&);
+    Point& norm(const int&, const int&);
+
+    void set_color(const QColor&);
+    QColor& get_color();
 
     void scale(const double kx, const double ky, const double kz);
 
+    Body& operator = (const Body &body);
+
 private:
+    Point norm_calc(const Point&, const Point&, const Point&);
+    void norms_processing();
+
     vector<Point> points, norms;
     vector<vector<Point>> faces;
 
@@ -36,13 +55,29 @@ class Pendulum : public QObject
     Q_OBJECT
 
 public:
-    Pendulum(Point& center, QString& filename, QColor& color);
+    Pendulum(QString& filename = QString("model/pendulum.obj"), QColor& color = QColor(0, 0, 0),
+             Point& center = Point(0, 0, 0));
     ~Pendulum();
 
-    void set_center(Point& center);
+    void set_center(const Point& center);
     Point& get_center();
 
+    int get_verts_cnt();
+    Point& vert(const int&);
+
+    int get_faces_cnt();
+    vector<Point> face(const int&);
+
+    int get_norms_cnt();
+    void set_norm(const int&, const int&, const Point&);
+    Point& norm(const int&, const int&);
+
+    void set_color(const QColor&);
+    QColor& get_color();
+
     void scale(const double kx, const double ky, const double kz);
+
+    Pendulum& operator = (const Body &body);
 
     bool is_running();
 
@@ -55,6 +90,9 @@ signals:
     void stop();
 
 private:
+    Point norm_calc(const Point&, const Point&, const Point&);
+    void norms_processing();
+
     vector<Point> points, norms;
     vector<vector<Point>> faces;
 

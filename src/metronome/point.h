@@ -23,6 +23,9 @@ public:
     Point& operator+ (const Point &pt);
     int& operator[] (const int index);
 
+    float norm() const;
+    Point& normalize(tl = 1);
+
     void move(const int dx, const int dy, const int dz);
     void scale(const double kx, const double ky, const double kz);
     void rot(const double fi_x, const double fi_y, const double fi_z);

@@ -102,8 +102,9 @@ void Canvas::draw_body()
 
     Point cam_pos = scene.get_camera_pos();
     Point cam_dir = scene.get_camera_view();
+    Point cam_up = scene.get_camera_up();
 
-    process_body(scene.get_body(), cam_pos, cam_dir);
+    process_body(scene.get_body(), cam_pos, cam_dir, cam_up);
 
     update();
     update_screen();
@@ -115,8 +116,9 @@ void Canvas::draw_pendulum()
 
     Point cam_pos = scene.get_camera_pos();
     Point cam_dir = scene.get_camera_view();
+    Point cam_up = scene.get_camera_up();
 
-    process_pend(scene.get_pendulum(), cam_pos, cam_dir);
+    process_pend(scene.get_pendulum(), cam_pos, cam_dir, cam_up);
 
     update();
     update_screen();
@@ -364,14 +366,14 @@ Pendulum& Scene::get_pendulum()
     return pend;
 }
 
-void Scene::set_body(const Point center)
+void Scene::set_body(const Body& body)
 {
-    body.set_center(center);
+    this->body = body;
 }
 
-void Scene::set_pendulum(const Point center)
+void Scene::set_pendulum(const Pendulum& pendulum)
 {
-    pend.set_center(center);
+    this->pend = pendulum;
 }
 
 void Scene::scale_model(const double kx, const double ky, const double kz)
