@@ -1,4 +1,5 @@
 #include "camera.h"
+#include <cmath>
 
 Camera::Camera() : pos(Point(0, 0, 0)), view(Point(0, 0, 0)), up(Point(0, 1, 0))
 {

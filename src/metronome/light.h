@@ -13,7 +13,7 @@ public:
     ~Light() = default;
 
     void set_pos(const Point &pos);
-    Point& get_pos();
+    const Point& get_pos();
 
     void set_intensity(const float power);
     float get_intensity();

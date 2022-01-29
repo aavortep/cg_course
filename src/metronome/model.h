@@ -14,8 +14,8 @@ class Body : public QObject
     Q_OBJECT
 
 public:
-    Body(QString& filename = QString("model/body.obj"), QColor& color = QColor(0, 0, 0),
-         Point& center = Point(0, 0, 0));
+    Body(QString filename = QString("model/body.obj"), QColor color = QColor(0, 0, 0),
+         Point center = Point(0, 0, 0));
     ~Body();
 
     void set_center(const Point& center);
@@ -55,8 +55,8 @@ class Pendulum : public QObject
     Q_OBJECT
 
 public:
-    Pendulum(QString& filename = QString("model/pendulum.obj"), QColor& color = QColor(0, 0, 0),
-             Point& center = Point(0, 0, 0));
+    Pendulum(QString filename = QString("model/pendulum.obj"), QColor color = QColor(0, 0, 0),
+             Point center = Point(0, 0, 0));
     ~Pendulum();
 
     void set_center(const Point& center);
@@ -66,7 +66,7 @@ public:
     Point& vert(const int&);
 
     int get_faces_cnt();
-    vector<Point> face(const int&);
+    vector<int> face(const int&);
 
     int get_norms_cnt();
     void set_norm(const int&, const int&, const Point&);

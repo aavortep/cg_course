@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include <cmath>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ Canvas::Canvas(const int& w, const int& h, QObject *parent)
     init_color_cache();
     init_zbuffer();
 
-    scene.set_camera(Point(0, 0, 4), Point(0, 0, 0));
+    scene.set_camera(Point(0, 0, 4), Point(0, 0, 0), Point(0, 1, 0));
     scene.set_light(Point(100, 1000, 100), 1300);
 
     update();
@@ -79,8 +80,8 @@ void Canvas::init_color_cache()
 
 void Canvas::clear_color_cache()
 {
-    for (int i = 0; i < w + 1; i++)
-        for (int j = 0; j < h + 1; j++)
+    for (int i = 0; i < width + 1; i++)
+        for (int j = 0; j < height + 1; j++)
             color_cache[i][j] = bg_color;
 }
 
@@ -126,12 +127,12 @@ void Canvas::draw_pendulum()
 
 void Canvas::add_body(Point &center, QString &filename, QColor &color)
 {
-    scene.set_body(Body(center, filename, color));
+    scene.set_body(Body(filename, color, center));
 }
 
 void Canvas::add_pendulum(Point &center, QString &filename, QColor &color)
 {
-    scene.set_pendulum(Pendulum(center, filename, color));
+    scene.set_pendulum(Pendulum(filename, color, center));
 }
 
 void Canvas::scale_model(const double kx, const double ky, const double kz)
@@ -158,8 +159,8 @@ void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir, Point &cam
 {
     size_t i, j;
     bool skip;
-    float camZInc = fabs(cam_pos.get_z) + 1;
-    float camZDec = fabs(cam_pos.get_z) - 1;
+    float camZInc = fabs(cam_pos.get_z()) + 1;
+    float camZDec = fabs(cam_pos.get_z()) - 1;
 
     Point center = body.get_center();
     size_t faces = body.get_faces_cnt();
@@ -185,7 +186,7 @@ void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir, Point &cam
         {
             Point v = center + body.vert(face[j]);
 
-            if (v.get_z > camZDec && v.get_z > camZInc)
+            if (v.get_z() > camZDec && v.get_z() > camZInc)
             {
                 skip = true;
                 break;
@@ -226,7 +227,7 @@ void Canvas::process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir, Point 
     for (i = 0; i < faces; i++)
     {
         skip = false;
-        std::vector<int> face = pend.face(i);
+        vector<int> face = pend.face(i);
 
         Point screenCoords[3];
         float intensity[3] = { BG_LIGHT, BG_LIGHT, BG_LIGHT };
@@ -235,7 +236,7 @@ void Canvas::process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir, Point 
         {
             Point v = center + pend.vert(face[j]);
 
-            if (v.get_z > camZDec && v.get_z > camZInc)
+            if (v.get_z() > camZDec && v.get_z() > camZInc)
             {
                 skip = true;
                 break;
@@ -278,34 +279,34 @@ float Canvas::process_light(const Point &vert, const Point &norm)
 
 void Canvas::process_triangle(Point &v1, Point &v2, Point &v3, const QColor &color, float &i1, float &i2, float &i3)
 {
-    if (v1.get_y == v2.get_y && v1.get_y == v3.get_y)
+    if (v1.get_y() == v2.get_y() && v1.get_y() == v3.get_y())
             return;
 
-    if (v1.get_y > v2.get_y)
+    if (v1.get_y() > v2.get_y())
     {
         std::swap(v1, v2);
         std::swap(i1, i2);
     }
-    if (v1.get_y > v3.get_y)
+    if (v1.get_y() > v3.get_y())
     {
         std::swap(v1, v3);
         std::swap(i1, i3);
     }
-    if (v2.get_y > v3.get_y)
+    if (v2.get_y() > v3.get_y())
     {
         std::swap(v2, v3);
         std::swap(i2, i3);
     }
 
-    int total_height = v3.get_y - v1.get_y;
+    int total_height = v3.get_y() - v1.get_y();
 
     for (int i = 0; i < total_height; i++)
     {
-        bool second_half = i > v2.get_y - v1.get_y || v2.get_y == v1.get_y;
-        int segment_height = second_half ? v3.get_y - v2.get_y : v2.get_y - v1.get_y;
+        bool second_half = i > v2.get_y() - v1.get_y() || v2.get_y() == v1.get_y();
+        int segment_height = second_half ? v3.get_y() - v2.get_y() : v2.get_y() - v1.get_y();
 
         float alpha = (float)i / total_height;
-        float betta = (float)(i - (second_half ? v2.get_y - v1.get_y : 0)) / segment_height;
+        float betta = (float)(i - (second_half ? v2.get_y() - v1.get_y() : 0)) / segment_height;
 
         Point A = v1 + Point(v3 - v1) * alpha;
         Point B = second_half ? v2 + Point(v3 - v2) * betta : v1 + Point(v2 - v1) * betta;
@@ -313,28 +314,28 @@ void Canvas::process_triangle(Point &v1, Point &v2, Point &v3, const QColor &col
         float iA = i1 + (i3 - i1) * alpha;
         float iB = second_half ? i2 + (i3 - i2) * betta : i1 + (i2 - i1) * betta;
 
-        if (A.get_x > B.get_x)
+        if (A.get_x() > B.get_x())
         {
             std::swap(A, B);
             std::swap(iA, iB);
         }
 
-        A.get_x = std::max(A.get_x, 0);
-        B.get_x = std::min(B.get_x, w);
+        A.get_x() = std::max(A.get_x(), 0);
+        B.get_x() = std::min(B.get_x(), width);
 
-        for (int j = A.get_x; j <= B.get_x; j++)
+        for (int j = A.get_x(); j <= B.get_x(); j++)
         {
-            float phi = B.get_x == A.get_x ? 1. : (float)(j - A.get_x) / (float)(B.get_x - A.get_x);
+            float phi = B.get_x() == A.get_x() ? 1. : (float)(j - A.get_x()) / (float)(B.get_x() - A.get_x());
 
             Point P = Point(A) + Point(B - A) * phi;
             float iP = iA + (iB - iA) * phi;
 
-            if (P.get_x >= w || P.get_y >= h || P.get_x < 0 || P.get_y < 0) continue;
+            if (P.get_x() >= width || P.get_y() >= height || P.get_x() < 0 || P.get_y() < 0) continue;
 
-            if (zbuffer.get_depth(P.get_x, P.get_y) < P.get_z)
+            if (zbuffer.get_depth(P.get_x(), P.get_y()) < P.get_z())
             {
-                zbuffer.set_depth(P.get_x, P.get_y, P.get_z);
-                color_cache[P.get_x][P.get_y] = QColor(iColor(color.rgba(), iP));
+                zbuffer.set_depth(P.get_x(), P.get_y(), P.get_z());
+                color_cache[P.get_x()][P.get_y()] = QColor(iColor(color.rgba(), iP));
             }
         }
     }
@@ -342,7 +343,7 @@ void Canvas::process_triangle(Point &v1, Point &v2, Point &v3, const QColor &col
 
 bool Canvas::is_visible(const Point &pt)
 {
-    if (pt.get_x < -FAULT || pt.get_x > wPerm || pt.get_y < -FAULT || pt.get_y > hPerm)
+    if (pt.get_x() < -FAULT || pt.get_x() > wPerm || pt.get_y() < -FAULT || pt.get_y() > hPerm)
         return false;
     return true;
 }
@@ -350,10 +351,11 @@ bool Canvas::is_visible(const Point &pt)
 
 // SCENE
 
-Scene::Scene()
-    : cam(Camera()), body(Body()), pend(Pendulum()), light(Light())
+Scene::Scene() : cam(Camera())
 {
-
+    this->body = new Body();
+    this->pend = new Pendulum();
+    this->light = new Light();
 }
 
 Body& Scene::get_body()

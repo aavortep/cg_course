@@ -15,7 +15,7 @@ protected:
 
 public:
     Matrix(int r = 4, int c = 4);
-    Matrix(Point);
+    Matrix(Point& v);
 
     int nrows();
     int ncols();

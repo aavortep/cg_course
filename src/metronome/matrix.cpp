@@ -1,6 +1,6 @@
 #include "matrix.h"
 
-Matrix::Matrix(Point v)
+Matrix::Matrix(Point& v)
     : data(std::vector<std::vector<float>>(4, std::vector<float>(1, 1.f))), rows(4), cols(1)
 {
     data[0][0] = v.x;

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Body::Body(QString& filename, QColor& color, Point& center) : center(center), color(color)
+Body::Body(QString filename, QColor color, Point center) : center(center), color(color)
 {
     ifstream in;  // файл
 
@@ -161,7 +161,7 @@ Body& Body::operator = (const Body &body)
     return *this;
 }
 
-Pendulum::Pendulum(QString& filename, QColor& color, Point& center) : center(center), color(color)
+Pendulum::Pendulum(QString filename, QColor color, Point center) : center(center), color(color)
 {
     ifstream in;  // файл
 

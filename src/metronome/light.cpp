@@ -15,7 +15,7 @@ void Light::set_pos(const Point &pos)
     this->pos = pos;
 }
 
-Point& Light::get_pos()
+const Point& Light::get_pos()
 {
     return this->pos;
 }

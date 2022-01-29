@@ -2,12 +2,14 @@
 #define POINT_H
 
 #define INDEX_FAIL -1000
+#include "matrix.h"
 
 class Point
 {
 public:
     Point() = default;
     Point(const int x, const int y, const int z);
+    Point(Matrix);
     ~Point() = default;
 
     int get_x() const;
@@ -22,9 +24,12 @@ public:
     Point& operator- (const Point &pt);
     Point& operator+ (const Point &pt);
     int& operator[] (const int index);
+    Point  operator ^(const Point&) const;
+    Point  operator *(const float&) const;
+    int operator *(const Point&) const;
 
     float norm() const;
-    Point& normalize(tl = 1);
+    Point& normalize(int l = 1);
 
     void move(const int dx, const int dy, const int dz);
     void scale(const double kx, const double ky, const double kz);
