@@ -35,9 +35,11 @@ public:
     Light& get_light();
 
     // камера
-    void set_camera(const Point &pos, const Point &dir);
+    void set_camera(const Point &pos, const Point &dir, const Point &up);
+    Camera& get_camera();
     Point& get_camera_pos();
     Point& get_camera_view();
+    Point& get_camera_up();
 
     void move_camera(const int dx, const int dy, const int dz);
     void rotate_camera(const double fi_x, const double fi_y, const double fi_z);
@@ -107,8 +109,8 @@ private:
     void init_color_cache();
     void clear_color_cache();
 
-    void process_body(Body &body, Point &cam_pos, Point &cam_dir);
-    void process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir);
+    void process_body(Body &body, Point &cam_pos, Point &cam_dir, Point &cam_up);
+    void process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir, Point &cam_up);
     void process_triangle(Point &v1, Point &v2, Point &v3, const QColor &color,
                           float &i1, float &i2, float &i3);
     float process_light(const Point &vert, const Point &norm);

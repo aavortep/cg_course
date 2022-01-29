@@ -8,6 +8,7 @@
 class Light
 {
 public:
+    Light();
     Light(const Point &pos, const float power);
     ~Light() = default;
 

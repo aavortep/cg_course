@@ -152,7 +152,7 @@ void Canvas::rotate_camera(const double fi_x, const double fi_y, const double fi
     scene.rotate_camera(fi_x, fi_y, fi_z);
 }
 
-void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir)
+void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir, Point &cam_up)
 {
     size_t i, j;
     bool skip;
@@ -165,7 +165,7 @@ void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir)
 
     Matrix viewPort = Camera::viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
     Matrix projection = Matrix::identity(4);
-    Matrix modelView = Camera::look_at(cam_pos, cam_dir);
+    Matrix modelView = Camera::look_at(cam_pos, cam_dir, cam_up);
 
     projection[3][2] = - 1.f / (cam_pos - cam_dir).norm();
 
@@ -202,7 +202,7 @@ void Canvas::process_body(Body &body, Point &cam_pos, Point &cam_dir)
     }
 }
 
-void Canvas::process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir)
+void Canvas::process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir, Point &cam_up)
 {
     size_t i, j;
     bool skip;
@@ -215,7 +215,7 @@ void Canvas::process_pend(Pendulum &pend, Point &cam_pos, Point &cam_dir)
 
     Matrix viewPort = Camera::viewport(width / 8, height / 8, width * 3 / 4, height * 3 / 4);
     Matrix projection = Matrix::identity(4);
-    Matrix modelView = Camera::look_at(cam_pos, cam_dir);
+    Matrix modelView = Camera::look_at(cam_pos, cam_dir, cam_up);
 
     projection[3][2] = -1.f / (cam_pos - cam_dir).norm();
 
@@ -396,9 +396,14 @@ Camera& Scene::get_camera()
     return cam;
 }
 
-void Scene::set_camera(const Point& pos, const Point& view)
+void Scene::set_camera(const Point& pos, const Point& view, const Point &up)
 {
-    cam = Camera(pos, view);
+    cam = Camera(pos, view, up);
+}
+
+Camera& Scene::get_camera()
+{
+    return cam;
 }
 
 Point& Scene::get_camera_pos()
@@ -409,6 +414,11 @@ Point& Scene::get_camera_pos()
 Point& Scene::get_camera_view()
 {
     return cam.get_view();
+}
+
+Point& Scene::get_camera_up()
+{
+    return cam.get_up();
 }
 
 void Scene::rotate_camera(const double fi_x, const double fi_y, const double fi_z)
