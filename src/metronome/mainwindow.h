@@ -2,7 +2,18 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "canvas.h"
+#include <QImage>
+#include <QPixmap>
+#include <QKeyEvent>
+
+#include <string>
+#include <chrono>
+
+#include "addmodelwindow.h"
+#include "addlightwindow.h"
+
+#include "MathObjects/vector3.h"
+#include "drawer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,18 +29,49 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Canvas *canvas;
+    Drawer *drawer;
 
-    Point center_body, center_pend;
-    Point light_pos;
+    int modelCnt, spriteCnt, lightCnt;
 
-    void init_canvas();
+    std::vector<Vector3f> centersM;
+    std::vector<Vector3f> centersS;
+    std::vector<Vector3f> lightPos;
+
+    void initDrawer();
+    void initLables();
+    void initButton();
+
+    void keyPressEvent(QKeyEvent *event);
+
+    AddModelWindow *addModelWindow;
+    AddModelParameters addModelparams;
+
+    AddLightWindow *addLightWindow;
+    AddLightParameters addLightParams;
 
 private slots:
-    void on_inc_clicked();
-    void on_dec_clicked();
-    void on_move_clicked();
-    void on_rotate_clicked();
-    void on_change_light_clicked();
+    void constructorMode(bool);
+
+    // Model
+    void changeModel();
+    void applyModelChange();
+    void cancelLineEditsModel();
+
+    // Sprite
+    //void changeSprite();
+    //void applySpriteChange();
+    //void cancelLineEditsSprite();
+
+    // Light
+    void changeLight();
+    void applyLightChange();
+    void cancelLineEditsLight();
+
+    // Window
+    void openAddModelWindow();
+    void setAddModelParams(AddModelParameters&);
+
+    void openAddLightWindow();
+    void setLightParams(AddLightParameters&);
 };
 #endif // MAINWINDOW_H

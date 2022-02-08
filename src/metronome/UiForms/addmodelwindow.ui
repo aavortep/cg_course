@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddModelWindow</class>
+ <widget class="QDialog" name="AddModelWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>535</width>
+    <height>289</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background: rgba(50, 50, 50, 255);
+}</string>
+  </property>
+  <widget class="QLabel" name="label_0">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>221</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>File name</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_file">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>221</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_file">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>40</y>
+     <width>111</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    color: rgba(200, 200, 200, 180);
+    border-radius: 5px;
+    background: rgba(20, 20, 20, 180);
+    }
+
+QPushButton:hover {
+    background: rgba(10, 10, 10, 180);
+    }
+
+QPushButton:pressed {
+    border-style: inset;
+    background: rgba(0, 0, 0, 180);
+    }</string>
+   </property>
+   <property name="text">
+    <string>Choose file</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_moveX">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>100</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Center</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>X:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Y:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_moveY">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>130</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Z:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_moveZ">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>160</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>70</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Scale</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>100</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>X:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_scaleX">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>100</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>160</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Z:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>130</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Y:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_scaleZ">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>160</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_scaleY">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>130</y>
+     <width>51</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>130</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Color</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ok">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>71</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    color: rgba(200, 200, 200, 180);
+    border-radius: 5px;
+    background: rgba(20, 20, 20, 180);
+    }
+
+QPushButton:hover {
+    background: rgba(10, 10, 10, 180);
+    }
+
+QPushButton:pressed {
+    border-style: inset;
+    background: rgba(0, 0, 0, 180);
+    }</string>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_cancel">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>250</y>
+     <width>71</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    color: rgba(200, 200, 200, 180);
+    border-radius: 5px;
+    background: rgba(20, 20, 20, 180);
+    }
+
+QPushButton:hover {
+    background: rgba(10, 10, 10, 180);
+    }
+
+QPushButton:pressed {
+    border-style: inset;
+    background: rgba(0, 0, 0, 180);
+    }</string>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_color">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>150</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    color: rgba(200, 200, 200, 180);
+    border-radius: 5px;
+    background: rgba(20, 20, 20, 180);
+    }
+
+QPushButton:hover {
+    background: rgba(10, 10, 10, 180);
+    }
+
+QPushButton:pressed {
+    border-style: inset;
+    background: rgba(0, 0, 0, 180);
+    }</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>120</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_isSprite">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>70</y>
+     <width>81</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox::indicator + QCheckBox::unchecked {
+	background-color: rgba(40, 40, 40, 255);
+}
+
+QCheckBox::indicator + QCheckBox::checked {
+	background-color: rgba(20, 20, 20, 255);
+}
+
+QCheckBox{
+	color: rgba(255, 255, 255, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Sprite</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>40</y>
+     <width>147</width>
+     <height>173</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label_en">
+      <property name="text">
+       <string>End of movement</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="le_en_x">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_en_x">
+        <property name="text">
+         <string>X:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="le_en_y">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="le_en_z">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_en_y">
+        <property name="text">
+         <string>Y:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_en_z">
+        <property name="text">
+         <string>Z:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_sp">
+      <property name="text">
+       <string>Speed</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="le_speed">
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLineEdit" name="le_name">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>200</y>
+     <width>181</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background: rgba(20, 20, 20, 180);
+	color: rgba(200, 200, 200, 255);
+	border-style: inset;
+    border-radius: 5px;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Qlabel{
+    color: rgba(200, 200, 200, 180);
+}</string>
+   </property>
+   <property name="text">
+    <string>Model name:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <zorder>le_scaleY</zorder>
+  <zorder>label_0</zorder>
+  <zorder>le_file</zorder>
+  <zorder>pushButton_file</zorder>
+  <zorder>le_moveX</zorder>
+  <zorder>label_1</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>le_moveY</zorder>
+  <zorder>label_4</zorder>
+  <zorder>le_moveZ</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_6</zorder>
+  <zorder>le_scaleX</zorder>
+  <zorder>label_8</zorder>
+  <zorder>label_7</zorder>
+  <zorder>le_scaleZ</zorder>
+  <zorder>label_9</zorder>
+  <zorder>pushButton_ok</zorder>
+  <zorder>pushButton_cancel</zorder>
+  <zorder>pushButton_color</zorder>
+  <zorder>label</zorder>
+  <zorder>checkBox_isSprite</zorder>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>le_name</zorder>
+  <zorder>label_10</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
