@@ -70,8 +70,8 @@ void MainWindow::initButton()
     connect(ui->pushButton_mapply, SIGNAL(released()), this, SLOT(applyModelChange()));
     connect(ui->pushButton_mcancel, SIGNAL(released()), this, SLOT(cancelLineEditsModel()));
 
-    // connect run
-    // connect stop
+    connect(ui->pushButton_run, SIGNAL(released()), this, SLOT(runModel()));
+    connect(ui->pushButton_stop, SIGNAL(released()), this, SLOT(stopModel()));
 
     connect(ui->pushButton_lapply, SIGNAL(released()), this, SLOT(applyLightChange()));
     connect(ui->pushButton_lcancel, SIGNAL(released()), this, SLOT(cancelLineEditsLight()));
@@ -206,6 +206,17 @@ void MainWindow::cancelLineEditsModel()
     ui->le_mrotate_x->setText("0");
     ui->le_mrotate_y->setText("0");
     ui->le_mrotate_z->setText("0");
+}
+
+void MainWindow::runModel()
+{
+    int tempo = ui->spinBox_bpm->value();
+    drawer->runModel(tempo);
+}
+
+void MainWindow::stopModel()
+{
+    drawer->stopModel();
 }
 
 

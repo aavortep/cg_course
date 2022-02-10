@@ -20,7 +20,6 @@ protected:
     Vector3f center;
     std::vector<Vector3f> verts;
 
-    // attention, this Vector3i means vertex/uv/normal
     std::vector<std::vector<Vector3i>> faces;
     std::vector<Vector3f> norms;
 
@@ -41,6 +40,7 @@ public:
     // Vertes
     int       getVertsCount();
     Vector3f& vert(const int&);
+    void      setVert(const int&, const Vector3f&);
 
     // Faces
     int              getFacesCount();
@@ -57,6 +57,13 @@ public:
 
     void scale(const Vector3f&);
     void rotate(const Vector3f&);
+
+    void run(const int tempo);
+    void stop();
+    bool isRunning();
+
+    // oscillation trajectories
+    std::vector<std::vector<Vector3f>> trajs;
 };
 
 #endif // MODEL_H

@@ -56,6 +56,8 @@ private slots:
     void changeModel();
     void applyModelChange();
     void cancelLineEditsModel();
+    void runModel();
+    void stopModel();
 
     // Sprite
     //void changeSprite();

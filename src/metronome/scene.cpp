@@ -30,9 +30,22 @@ Model& Scene::getModel(const int& idx)
 
 void Scene::editModel(const int& idx, Vector3f& center, Vector3f& scale, Vector3f& rotate)
 {
-    models[idx].setCenter(center);
-    models[idx].scale(scale);
-    models[idx].rotate(rotate);
+    if (!models[1].isRunning())
+    {
+        models[idx].setCenter(center);
+        models[idx].scale(scale);
+        models[idx].rotate(rotate);
+    }
+}
+
+void Scene::runModel(const int tempo)
+{
+    models[1].run(tempo);
+}
+
+void Scene::stopModel()
+{
+    models[1].stop();
 }
 
 

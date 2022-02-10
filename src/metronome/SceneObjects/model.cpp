@@ -1,4 +1,5 @@
 #include "model.h"
+#include <cmath>
 
 Model::Model(const char *filename, const QColor& color, const Vector3f& center)
     : center(center), color(color)
@@ -58,8 +59,6 @@ Model::Model(const char *filename, const QColor& color, const Vector3f& center)
             faces.push_back(f);
         }
     }
-    // For time tests
-    //std::cerr << "Verteces - " << verts.size() << std::endl;
 }
 
 
@@ -86,6 +85,11 @@ int Model::getVertsCount()
 Vector3f& Model::vert(const int& idx)
 {
     return verts[idx];
+}
+
+void Model::setVert(const int &idx, const Vector3f &v)
+{
+    this->verts[idx] = v;
 }
 
 
@@ -198,4 +202,45 @@ void Model::rotate(const Vector3f& angle)
 
         verts[i].transform(m2);
     }
+}
+
+
+void Model::run(const int tempo)
+{
+    isSprite = true;
+
+    //calculate trajectories
+    float herz = tempo / 60.0, t = 1 / herz, min_y = 0.805989;
+    float ampl = sqrt(4 * t / (3 * M_PI) - 8 / 3.0);
+    float r, step;
+    int x, y;
+    std::vector<Vector3f> trajectory;
+    for (int i = 0; i < verts.size(); ++i)
+    {
+        r = verts[i].y - min_y;
+        if (!r)
+            trajectory.push_back(Vector3f(verts[i].x, verts[i].y, verts[i].z));
+        else
+        {
+            step = 1 / r;
+            for (float fi = M_PI / 2 - ampl; fi < M_PI / 2 + ampl; fi += step)
+            {
+                x = lround(r * cos(fi));
+                y = lround(r * sin(fi));
+                trajectory.push_back(Vector3f(x, y, verts[i].z));
+            }
+        }
+        trajs.push_back(trajectory);
+        trajectory.clear();
+    }
+}
+
+void Model::stop()
+{
+    isSprite = false;
+}
+
+bool Model::isRunning()
+{
+    return isSprite;
 }

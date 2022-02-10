@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
+    <width>361</width>
     <height>289</height>
    </rect>
   </property>
@@ -460,8 +460,8 @@ QPushButton:pressed {
   <widget class="QCheckBox" name="checkBox_isSprite">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>70</y>
+     <x>400</x>
+     <y>230</y>
      <width>81</width>
      <height>22</height>
     </rect>

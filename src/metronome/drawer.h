@@ -23,7 +23,7 @@ private:
     // Scene
     Scene scene;
 
-    QColor bgColor = QColor(94, 115, 107);
+    QColor bgColor = QColor(102, 204, 255);
 
     // Screen
     QImage canvas;
@@ -67,6 +67,8 @@ public:
     // Model
     void addModel(Vector3f&, Vector3f&, QString&, QColor&);
     void editModel(const int&, Vector3f&, Vector3f&, Vector3f&);
+    void runModel(const int tempo);
+    void stopModel();
 
     // Sprite
     void addSprite(Vector3f&, Vector3f&, QString&, QColor&, Vector3f&, float&);

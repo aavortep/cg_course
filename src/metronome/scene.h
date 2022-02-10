@@ -22,6 +22,8 @@ public:
     void   addModel(const Model&, const Vector3f& scale = Vector3f(1, 1, 1));
     Model& getModel(const int&);
     void   editModel(const int&, Vector3f&, Vector3f&, Vector3f&);
+    void   runModel(const int tempo);
+    void   stopModel();
 
 
     // Sprites

@@ -95,6 +95,63 @@ void Drawer::editModel(const int& idx, Vector3f& center, Vector3f& scale, Vector
     scene.editModel(idx, center, scale, rotate);
 }
 
+void Drawer::runModel(const int tempo)
+{
+    scene.runModel(tempo);  // calculate trajectories
+
+    Model pend = scene.getModel(1);
+    Vector3f vert;
+    std::vector<int> cur_pos;
+    int verts_num = pend.getVertsCount();
+    for (int i = 0; i < verts_num; ++i)
+        cur_pos.push_back(pend.trajs[i].size() / 2);
+
+    // oscillation
+    bool right = true, left = false;
+    while (true)
+    {
+        for (int i = 0; i < verts_num; ++i)
+        {
+            vert = pend.vert(i);
+            if (vert == pend.trajs[i][0])
+            {
+                right = true;
+                left = false;
+            }
+            else if (vert == pend.trajs[i][pend.trajs[i].size() - 1])
+            {
+                right = false;
+                left = true;
+            }
+
+            if (right)
+                --cur_pos[i];
+            else if (left)
+                ++cur_pos[i];
+            vert = pend.trajs[i][cur_pos[i]];
+            pend.setVert(i, vert);
+        }
+
+        draw();
+    }
+}
+
+void Drawer::stopModel()
+{
+    scene.stopModel();
+
+    Model pend = scene.getModel(1);
+    Vector3f vert;
+    int verts_num = pend.getVertsCount();
+    for (int i = 0; i < verts_num; ++i)
+    {
+        vert = pend.trajs[i][pend.trajs[i].size() / 2];
+        pend.setVert(i, vert);
+    }
+
+    draw();
+}
+
 
 
 // Sprite
@@ -165,7 +222,6 @@ void Drawer::objectProcessing(Model& model, Vector3f& camPos, Vector3f& camDir, 
     size_t faces    = model.getFacesCount();
     QColor color    = model.getColor();
 
-    //Transformation matrix (not sure how it works)
     Matrix viewPort   = Camera::viewport(w/8, h/8, w*3/4, h*3/4);
     Matrix projection = Matrix::identity(4);
     Matrix modelView  = Camera::lookAt(camPos, camDir, camUp);
