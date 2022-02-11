@@ -24,15 +24,23 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->comboBox_light, SIGNAL(currentIndexChanged(QString)), SLOT(changeLight()));
 
 
-    connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(constructorMode(bool)));
+    //connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(constructorMode(bool)));
 
-    modelCnt  = 0;
+    modelCnt  = 2;
     spriteCnt = 0;
     lightCnt  = 0;
 
     lightPos.push_back(Vector3f(100, 1000, 100));
     drawer->addLight(Vector3f(100, 1000, 100), 1300);
     ui->comboBox_light->addItem("Main light");
+
+    Vector3f center(0, 0, 0);
+    Vector3f scaleK(1, 1, 1);
+    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/body.obj"), QColor(255, 255, 255));
+    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/pendulum.obj"), QColor(255, 255, 255));
+    centersM.push_back(center);
+    ui->comboBox_model->addItem("metronome");
+    drawer->draw();
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +72,7 @@ void MainWindow::initDrawer()
 
 void MainWindow::initButton()
 {
-    connect(ui->pushButton_addModel, SIGNAL(released()), this, SLOT(openAddModelWindow()));
+    //connect(ui->pushButton_addModel, SIGNAL(released()), this, SLOT(openAddModelWindow()));
     connect(ui->pushButton_addLight, SIGNAL(released()), this, SLOT(openAddLightWindow()));
 
     connect(ui->pushButton_mapply, SIGNAL(released()), this, SLOT(applyModelChange()));
@@ -140,7 +148,7 @@ void MainWindow::applyModelChange()
     if (centersM.size() == 0)
         return;
 
-    int idx = ui->comboBox_model->currentIndex();
+    //int idx = ui->comboBox_model->currentIndex();
 
     Vector3f center, scale, rotate;
 
@@ -149,7 +157,7 @@ void MainWindow::applyModelChange()
         ui->le_mmove_y->text().isEmpty() ||
         ui->le_mmove_z->text().isEmpty())
     {
-        center = Vector3f(centersM[idx]);
+        center = Vector3f(centersM[0]);
     }
     else
     {
@@ -186,7 +194,51 @@ void MainWindow::applyModelChange()
                           ui->le_mrotate_z->text().toFloat());
     }
 
-    drawer->editModel(idx, center, scale, rotate);
+    drawer->editModel(0, center, scale, rotate);
+
+    // For move
+    if (ui->le_mmove_x->text().isEmpty() ||
+        ui->le_mmove_y->text().isEmpty() ||
+        ui->le_mmove_z->text().isEmpty())
+    {
+        center = Vector3f(centersM[1]);
+    }
+    else
+    {
+        center = Vector3f(ui->le_mmove_x->text().toFloat(),
+                          ui->le_mmove_y->text().toFloat(),
+                          ui->le_mmove_z->text().toFloat());
+    }
+
+    // For scale
+    if (ui->le_mscale_x->text().isEmpty() ||
+        ui->le_mscale_y->text().isEmpty() ||
+        ui->le_mscale_z->text().isEmpty())
+    {
+        scale = Vector3f(1, 1, 1);
+    }
+    else
+    {
+        scale = Vector3f(ui->le_mscale_x->text().toFloat(),
+                         ui->le_mscale_y->text().toFloat(),
+                         ui->le_mscale_z->text().toFloat());
+    }
+
+    // For rotate
+    if (ui->le_mrotate_x->text().isEmpty() ||
+        ui->le_mrotate_y->text().isEmpty() ||
+        ui->le_mrotate_z->text().isEmpty())
+    {
+        rotate = Vector3f(0, 0, 0);
+    }
+    else
+    {
+        rotate = Vector3f(ui->le_mrotate_x->text().toFloat(),
+                          ui->le_mrotate_y->text().toFloat(),
+                          ui->le_mrotate_z->text().toFloat());
+    }
+
+    drawer->editModel(1, center, scale, rotate);
     drawer->draw();
 }
 
@@ -211,7 +263,20 @@ void MainWindow::cancelLineEditsModel()
 void MainWindow::runModel()
 {
     int tempo = ui->spinBox_bpm->value();
-    drawer->runModel(tempo);
+    Scene scene = drawer->getScene();
+    scene.runModel(tempo);  // calculate trajectories
+
+    Model pend = scene.getModel(1);
+    std::vector<int> cur_pos;
+    int verts_num = pend.getVertsCount();
+    for (int i = 0; i < verts_num; ++i)
+        cur_pos.push_back(pend.trajs[i].size() / 2);
+
+    while (true)
+    {
+        connect(ui->pushButton_stop, SIGNAL(released()), this, SLOT(stopModel()));
+        cur_pos = drawer->runModel(tempo, cur_pos);
+    }
 }
 
 void MainWindow::stopModel()

@@ -85,7 +85,7 @@ void Drawer::draw()
 
 
 // Model
-void Drawer::addModel(Vector3f& center, Vector3f& scale, QString& filename, QColor& color)
+void Drawer::addModel(Vector3f& center, Vector3f& scale, QString filename, QColor color)
 {
     scene.addModel(Model(filename.toStdString().c_str(), color, center), scale);
 }
@@ -95,20 +95,15 @@ void Drawer::editModel(const int& idx, Vector3f& center, Vector3f& scale, Vector
     scene.editModel(idx, center, scale, rotate);
 }
 
-void Drawer::runModel(const int tempo)
+std::vector<int> Drawer::runModel(const int tempo, std::vector<int> cur_pos)
 {
-    scene.runModel(tempo);  // calculate trajectories
-
     Model pend = scene.getModel(1);
     Vector3f vert;
-    std::vector<int> cur_pos;
     int verts_num = pend.getVertsCount();
-    for (int i = 0; i < verts_num; ++i)
-        cur_pos.push_back(pend.trajs[i].size() / 2);
 
     // oscillation
     bool right = true, left = false;
-    while (true)
+    //while (true)  // зацикливается!!!
     {
         for (int i = 0; i < verts_num; ++i)
         {
@@ -134,6 +129,8 @@ void Drawer::runModel(const int tempo)
 
         draw();
     }
+
+    return cur_pos;
 }
 
 void Drawer::stopModel()
@@ -431,4 +428,9 @@ void Drawer::clearScreen()
     clearCanvas();
     clearColorCache();
     clearZBuffer();
+}
+
+Scene& Drawer::getScene()
+{
+    return scene;
 }

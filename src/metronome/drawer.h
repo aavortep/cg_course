@@ -65,9 +65,9 @@ public:
     void draw();
 
     // Model
-    void addModel(Vector3f&, Vector3f&, QString&, QColor&);
+    void addModel(Vector3f&, Vector3f&, QString, QColor);
     void editModel(const int&, Vector3f&, Vector3f&, Vector3f&);
-    void runModel(const int tempo);
+    std::vector<int> runModel(const int tempo, std::vector<int> cur_pos);
     void stopModel();
 
     // Sprite
@@ -84,6 +84,8 @@ public:
     void rotateCamera(const float&);
     void strafeCamera(const float&);
     void movingCamera(const float&);
+
+    Scene& getScene();
 };
 
 inline QRgb iColor(const QRgb& a, const float& i);

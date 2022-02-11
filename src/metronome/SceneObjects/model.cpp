@@ -210,23 +210,23 @@ void Model::run(const int tempo)
     isSprite = true;
 
     //calculate trajectories
-    float herz = tempo / 60.0, t = 1 / herz, min_y = 0.805989;
-    float ampl = sqrt(4 * t / (3 * M_PI) - 8 / 3.0);
-    float r, step;
-    int x, y;
+    const float g = 9.81, ampl = M_PI / 4;
+    float herz = tempo / 60.0, t = 1 / herz;
+    float r, step, min_y = 0.805989;
+    float x, y;
     std::vector<Vector3f> trajectory;
     for (int i = 0; i < verts.size(); ++i)
     {
-        r = verts[i].y - min_y;
-        if (!r)
+        r = t * t / (4 * M_PI * M_PI) * g;
+        if (verts[i].y == min_y)
             trajectory.push_back(Vector3f(verts[i].x, verts[i].y, verts[i].z));
         else
         {
-            step = 1 / r;
+            step = 1;
             for (float fi = M_PI / 2 - ampl; fi < M_PI / 2 + ampl; fi += step)
             {
-                x = lround(r * cos(fi));
-                y = lround(r * sin(fi));
+                x = r * cos(fi);
+                y = r * sin(fi);
                 trajectory.push_back(Vector3f(x, y, verts[i].z));
             }
         }

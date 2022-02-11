@@ -32,43 +32,19 @@
      <string notr="true"/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_addModel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>80</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    color: rgba(200, 200, 200, 150);
-    border-radius: 5px;
-    background: rgba(20, 20, 20, 150);
-    }
-
-QPushButton:hover {
-    background: rgba(10, 10, 10, 150);
-    }
-
-QPushButton:pressed {
-    border-style: inset;
-    background: rgba(0, 0, 0, 150);
-    }</string>
-    </property>
-    <property name="text">
-     <string>Load</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_addLight">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>10</y>
-      <width>80</width>
-      <height>25</height>
+      <x>1460</x>
+      <y>20</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
@@ -615,36 +591,6 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string>Apply</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox">
-    <property name="geometry">
-     <rect>
-      <x>1430</x>
-      <y>10</y>
-      <width>201</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QCheckBox::indicator + QCheckBox::unchecked {
-	background-color: rgba(40, 40, 40, 150);
-}
-
-QCheckBox::indicator + QCheckBox::checked {
-	background-color: rgba(20, 20, 20, 150);
-}
-
-QCheckBox{
-	background-color: rgba(20, 20, 20, 0);
-	color: rgba(255, 255, 255, 150);
-}</string>
-    </property>
-    <property name="text">
-     <string>Constructor mode</string>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_lcancel">
