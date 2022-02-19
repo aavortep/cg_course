@@ -12,7 +12,6 @@
 
 #define FAULT 500
 
-// Very thicc boi...
 class Drawer : public QGraphicsScene
 {
     Q_OBJECT
@@ -66,9 +65,18 @@ public:
 
     // Model
     void addModel(Vector3f&, Vector3f&, QString, QColor);
+    void setModel(const int idx, const Model& new_model);
     void editModel(const int&, Vector3f&, Vector3f&, Vector3f&);
-    std::vector<int> runModel(const int tempo, std::vector<int> cur_pos);
+    void rotPend(const int&, Vector3f&);
+    std::vector<int> runModel(std::vector<int> cur_pos);
     void stopModel();
+    float getLen(const int idx);
+    Vector3f computeFace();
+    Vector3f getBase(const int idx);
+    void setBase(const int idx, const Vector3f& new_base);
+    Model& getInitState(const int idx);
+    void setInitState(const int idx, const Model& init_state);
+    void toInitState();
 
     // Sprite
     void addSprite(Vector3f&, Vector3f&, QString&, QColor&, Vector3f&, float&);

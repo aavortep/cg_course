@@ -90,12 +90,22 @@ void Drawer::addModel(Vector3f& center, Vector3f& scale, QString filename, QColo
     scene.addModel(Model(filename.toStdString().c_str(), color, center), scale);
 }
 
+void Drawer::setModel(const int idx, const Model &new_model)
+{
+    scene.setModel(idx, new_model);
+}
+
 void Drawer::editModel(const int& idx, Vector3f& center, Vector3f& scale, Vector3f& rotate)
 {
     scene.editModel(idx, center, scale, rotate);
 }
 
-std::vector<int> Drawer::runModel(const int tempo, std::vector<int> cur_pos)
+void Drawer::rotPend(const int& idx, Vector3f& rotate)
+{
+    scene.rotPend(idx, rotate);
+}
+
+std::vector<int> Drawer::runModel(std::vector<int> cur_pos)
 {
     Model pend = scene.getModel(1);
     Vector3f vert;
@@ -146,6 +156,43 @@ void Drawer::stopModel()
         pend.setVert(i, vert);
     }
 
+    draw();
+}
+
+float Drawer::getLen(const int idx)
+{
+    return scene.getLen(idx);
+}
+
+Vector3f Drawer::computeFace()
+{
+    return scene.computeFace();
+}
+
+Vector3f Drawer::getBase(const int idx)
+{
+    return scene.getBase(idx);
+}
+
+void Drawer::setBase(const int idx, const Vector3f &new_base)
+{
+    scene.setBase(idx, new_base);
+}
+
+Model& Drawer::getInitState(const int idx)
+{
+    return scene.getInitState(idx);
+}
+
+void Drawer::setInitState(const int idx, const Model &init_state)
+{
+    scene.setInitState(idx, init_state);
+}
+
+void Drawer::toInitState()
+{
+    for (int i = 0; i < scene.countModels(); ++i)
+        setModel(i, getInitState(i));
     draw();
 }
 

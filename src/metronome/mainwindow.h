@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QKeyEvent>
+#include <QTimer>
 
 #include <string>
 #include <chrono>
@@ -30,16 +31,25 @@ public:
 private:
     Ui::MainWindow *ui;
     Drawer *drawer;
+    QTimer *_timer;
 
     int modelCnt, spriteCnt, lightCnt;
+
+    bool initState = true;
+    bool running = false;
 
     std::vector<Vector3f> centersM;
     std::vector<Vector3f> centersS;
     std::vector<Vector3f> lightPos;
+    Vector3f pend_base;
 
     void initDrawer();
     void initLables();
     void initButton();
+    Vector3f computeBase();
+    Model& getInitState(const int idx);
+    void setInitState(const int idx, const Model& init_state);
+    void toInitState();
 
     void keyPressEvent(QKeyEvent *event);
 
@@ -56,13 +66,10 @@ private slots:
     void changeModel();
     void applyModelChange();
     void cancelLineEditsModel();
+    void updateAnimation();
     void runModel();
     void stopModel();
-
-    // Sprite
-    //void changeSprite();
-    //void applySpriteChange();
-    //void cancelLineEditsSprite();
+    void modelToInit();
 
     // Light
     void changeLight();

@@ -93,11 +93,8 @@ Matrix Matrix::transpose()
     return result;
 }
 
-
-// Scary function, boo...
 Matrix Matrix::inverse()
 {
-    // Just little optimization
     int i, j, k;
 
     // augmenting the square matrix with the identity matrix of the same dimensions a => [ai]

@@ -21,6 +21,9 @@ void Scene::addModel(const Model& newModel, const Vector3f& scale)
 {
     models.push_back(newModel);
     models.back().scale(scale);
+
+    inits.push_back(newModel);
+    inits.back().scale(scale);
 }
 
 Model& Scene::getModel(const int& idx)
@@ -28,14 +31,24 @@ Model& Scene::getModel(const int& idx)
     return models[idx];
 }
 
+void Scene::setModel(const int idx, const Model &new_model)
+{
+    models[idx] = new_model;
+}
+
 void Scene::editModel(const int& idx, Vector3f& center, Vector3f& scale, Vector3f& rotate)
 {
-    if (!models[1].isRunning())
+    if (!models[models.size() - 1].isRunning())
     {
         models[idx].setCenter(center);
         models[idx].scale(scale);
         models[idx].rotate(rotate);
     }
+}
+
+void Scene::rotPend(const int& idx, Vector3f& rotate)
+{
+    models[idx].rot_pend(rotate);
 }
 
 void Scene::runModel(const int tempo)
@@ -48,6 +61,35 @@ void Scene::stopModel()
     models[1].stop();
 }
 
+float Scene::getLen(const int idx)
+{
+    return models[idx].getLen();
+}
+
+Vector3f Scene::computeFace()
+{
+    return models[0].computeFace();
+}
+
+Vector3f Scene::getBase(const int idx)
+{
+    return models[idx].getBase();
+}
+
+void Scene::setBase(const int idx, const Vector3f &new_base)
+{
+    models[idx].setBase(new_base);
+}
+
+Model& Scene::getInitState(const int idx)
+{
+    return inits[idx];
+}
+
+void Scene::setInitState(const int idx, const Model &init_state)
+{
+    inits[idx] = init_state;
+}
 
 
 // Sprites

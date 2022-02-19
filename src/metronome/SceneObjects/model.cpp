@@ -59,6 +59,9 @@ Model::Model(const char *filename, const QColor& color, const Vector3f& center)
             faces.push_back(f);
         }
     }
+
+    base = Vector3f(0, 0.805989, 0.362673);
+    length = 1.027258;
 }
 
 
@@ -109,6 +112,17 @@ std::vector<int> Model::face(const int& idx)
         face.push_back(faces[idx][i][0]);
 
     return face;
+}
+
+Vector3f Model::computeFace()
+{
+    Vector3f p1 = verts[5], p2 = verts[6], p3 = verts[8], res;
+    float a, b, c;
+    a = (p2.y - p1.y) * (p3.z - p1.z) - (p3.y - p1.y) * (p2.z - p1.z);
+    b = (p3.x - p1.x) * (p2.z - p1.z) - (p2.x - p1.x) * (p3.z - p1.z);
+    c = (p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y);
+    res = Vector3f(a, b, c);
+    return res;
 }
 
 
@@ -166,9 +180,29 @@ void Model::setColor(const QColor& newColor)
 
 
 
+float Model::getLen()
+{
+    return length;
+}
+
+Vector3f Model::getBase()
+{
+    return base;
+}
+
+void Model::setBase(const Vector3f &new_base)
+{
+    base = new_base;
+}
+
+
+
 void Model::scale(const Vector3f& k)
 {
     int nverts = verts.size();
+
+    if (k.x == 1 && k.z == 1)
+        length *= k.y;
 
     for (int i = 0; i < nverts; i++)
     {
@@ -205,6 +239,22 @@ void Model::rotate(const Vector3f& angle)
 }
 
 
+void Model::rot_pend(const Vector3f& angle)
+{
+    float tmp_x, tmp_y;
+    Vector3f base = Vector3f(0, 0.805989, 0.362673);;
+    for (int i = 0; i < verts.size(); ++i)
+    {
+        tmp_x = (verts[i].x - base.x) * cos(angle.z * M_PI / 180) -
+                (verts[i].y - base.y) * sin(angle.z * M_PI / 180);
+        tmp_y = (verts[i].x - base.x) * sin(angle.z * M_PI / 180) +
+                (verts[i].y - base.y) * cos(angle.z * M_PI / 180);
+        verts[i].x = tmp_x;
+        verts[i].y = tmp_y;
+    }
+}
+
+
 void Model::run(const int tempo)
 {
     isSprite = true;
@@ -213,7 +263,7 @@ void Model::run(const int tempo)
     const float g = 9.81, ampl = M_PI / 4;
     float herz = tempo / 60.0, t = 1 / herz;
     float r, step, min_y = 0.805989;
-    float x, y;
+    float x, y, start_x, start_y, end_x, end_y;
     std::vector<Vector3f> trajectory;
     for (int i = 0; i < verts.size(); ++i)
     {
@@ -223,11 +273,21 @@ void Model::run(const int tempo)
         else
         {
             step = 1;
-            for (float fi = M_PI / 2 - ampl; fi < M_PI / 2 + ampl; fi += step)
+            start_x = r * cos(M_PI / 2 - ampl);
+            start_y = r * sin(M_PI / 2 - ampl);
+            end_x = r * cos(M_PI / 2 + ampl);
+            end_y = start_y;
+            x = start_x;
+            y = start_y;
+            float tmp_x, tmp_y;
+            float angle = -2 * M_PI / 180;
+            while (x >= end_x && y >= end_y)
             {
-                x = r * cos(fi);
-                y = r * sin(fi);
                 trajectory.push_back(Vector3f(x, y, verts[i].z));
+                tmp_x = x * cos(angle) + y * sin(angle);
+                tmp_y = -x * sin(angle) + y * cos(angle);
+                x = tmp_x;
+                y = tmp_y;
             }
         }
         trajs.push_back(trajectory);

@@ -35,10 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_light->addItem("Main light");
 
     Vector3f center(0, 0, 0);
-    Vector3f scaleK(1, 1, 1);
-    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/body.obj"), QColor(255, 255, 255));
-    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/pendulum.obj"), QColor(255, 255, 255));
+    Vector3f scaleK(1, -1, 1);
+    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/model1.obj"), QColor(255, 255, 255));
+    drawer->addModel(center, scaleK, QString("../metronome/SourceObjects/pend1.obj"), QColor(253, 124, 110));
     centersM.push_back(center);
+    pend_base = computeBase();
     ui->comboBox_model->addItem("metronome");
     drawer->draw();
 }
@@ -83,6 +84,8 @@ void MainWindow::initButton()
 
     connect(ui->pushButton_lapply, SIGNAL(released()), this, SLOT(applyLightChange()));
     connect(ui->pushButton_lcancel, SIGNAL(released()), this, SLOT(cancelLineEditsLight()));
+
+    connect(ui->pushButton_init, SIGNAL(released()), this, SLOT(modelToInit()));
 }
 
 void MainWindow::initLables()
@@ -148,98 +151,61 @@ void MainWindow::applyModelChange()
     if (centersM.size() == 0)
         return;
 
-    //int idx = ui->comboBox_model->currentIndex();
+    if (running)
+        return;
 
     Vector3f center, scale, rotate;
 
-    // For move
-    if (ui->le_mmove_x->text().isEmpty() ||
-        ui->le_mmove_y->text().isEmpty() ||
-        ui->le_mmove_z->text().isEmpty())
+    for (int idx = 0; idx < modelCnt; ++idx)
     {
-        center = Vector3f(centersM[0]);
-    }
-    else
-    {
-        center = Vector3f(ui->le_mmove_x->text().toFloat(),
-                          ui->le_mmove_y->text().toFloat(),
-                          ui->le_mmove_z->text().toFloat());
-    }
+        // For move
+        if (ui->le_mmove_x->text().isEmpty() ||
+            ui->le_mmove_y->text().isEmpty() ||
+            ui->le_mmove_z->text().isEmpty())
+        {
+            center = Vector3f(centersM[0]);
+        }
+        else
+        {
+            center = Vector3f(ui->le_mmove_x->text().toFloat(),
+                              ui->le_mmove_y->text().toFloat(),
+                              ui->le_mmove_z->text().toFloat());
+        }
 
-    // For scale
-    if (ui->le_mscale_x->text().isEmpty() ||
-        ui->le_mscale_y->text().isEmpty() ||
-        ui->le_mscale_z->text().isEmpty())
-    {
-        scale = Vector3f(1, 1, 1);
-    }
-    else
-    {
-        scale = Vector3f(ui->le_mscale_x->text().toFloat(),
-                         ui->le_mscale_y->text().toFloat(),
-                         ui->le_mscale_z->text().toFloat());
-    }
+        // For scale
+        if (ui->le_mscale_x->text().isEmpty() ||
+            ui->le_mscale_y->text().isEmpty() ||
+            ui->le_mscale_z->text().isEmpty())
+        {
+            scale = Vector3f(1, 1, 1);
+        }
+        else
+        {
+            scale = Vector3f(ui->le_mscale_x->text().toFloat(),
+                             ui->le_mscale_y->text().toFloat(),
+                             ui->le_mscale_z->text().toFloat());
+        }
 
-    // For rotate
-    if (ui->le_mrotate_x->text().isEmpty() ||
-        ui->le_mrotate_y->text().isEmpty() ||
-        ui->le_mrotate_z->text().isEmpty())
-    {
-        rotate = Vector3f(0, 0, 0);
-    }
-    else
-    {
-        rotate = Vector3f(ui->le_mrotate_x->text().toFloat(),
-                          ui->le_mrotate_y->text().toFloat(),
-                          ui->le_mrotate_z->text().toFloat());
-    }
+        // For rotate
+        if (ui->le_mrotate_x->text().isEmpty() ||
+            ui->le_mrotate_y->text().isEmpty() ||
+            ui->le_mrotate_z->text().isEmpty())
+        {
+            rotate = Vector3f(0, 0, 0);
+        }
+        else
+        {
+            rotate = Vector3f(ui->le_mrotate_x->text().toFloat(),
+                              ui->le_mrotate_y->text().toFloat(),
+                              ui->le_mrotate_z->text().toFloat());
+        }
 
-    drawer->editModel(0, center, scale, rotate);
+        if (center != Vector3f(centersM[0]) || scale != Vector3f(1, 1, 1) || rotate != Vector3f(0, 0, 0))
+            initState = false;
 
-    // For move
-    if (ui->le_mmove_x->text().isEmpty() ||
-        ui->le_mmove_y->text().isEmpty() ||
-        ui->le_mmove_z->text().isEmpty())
-    {
-        center = Vector3f(centersM[1]);
+        drawer->editModel(idx, center, scale, rotate);
+        drawer->draw();
     }
-    else
-    {
-        center = Vector3f(ui->le_mmove_x->text().toFloat(),
-                          ui->le_mmove_y->text().toFloat(),
-                          ui->le_mmove_z->text().toFloat());
-    }
-
-    // For scale
-    if (ui->le_mscale_x->text().isEmpty() ||
-        ui->le_mscale_y->text().isEmpty() ||
-        ui->le_mscale_z->text().isEmpty())
-    {
-        scale = Vector3f(1, 1, 1);
-    }
-    else
-    {
-        scale = Vector3f(ui->le_mscale_x->text().toFloat(),
-                         ui->le_mscale_y->text().toFloat(),
-                         ui->le_mscale_z->text().toFloat());
-    }
-
-    // For rotate
-    if (ui->le_mrotate_x->text().isEmpty() ||
-        ui->le_mrotate_y->text().isEmpty() ||
-        ui->le_mrotate_z->text().isEmpty())
-    {
-        rotate = Vector3f(0, 0, 0);
-    }
-    else
-    {
-        rotate = Vector3f(ui->le_mrotate_x->text().toFloat(),
-                          ui->le_mrotate_y->text().toFloat(),
-                          ui->le_mrotate_z->text().toFloat());
-    }
-
-    drawer->editModel(1, center, scale, rotate);
-    drawer->draw();
 }
 
 void MainWindow::cancelLineEditsModel()
@@ -260,159 +226,96 @@ void MainWindow::cancelLineEditsModel()
     ui->le_mrotate_z->setText("0");
 }
 
+Vector3f MainWindow::computeBase()
+{
+    int idx = 0;
+    Vector3f base = drawer->getBase(idx), center = Vector3f(0, 0, 0);
+    size_t w = ui->graphicsView->width();
+    size_t h = ui->graphicsView->height();
+    Scene scene = drawer->getScene();
+    Vector3f camPos = scene.getCameraPos();
+    Vector3f camDir = scene.getCameraView();
+    Vector3f camUp  = scene.getCameraUp();
+
+    Matrix viewPort   = Camera::viewport(w/8, h/8, w*3/4, h*3/4);
+    Matrix projection = Matrix::identity(4);
+    Matrix modelView  = Camera::lookAt(camPos, camDir, camUp);
+    projection[3][2]  = - 1.f / (camPos - camDir).norm();
+    Matrix mvp = viewPort * projection * modelView;
+    Vector3f v = center + base;
+    base = Vector3f(mvp * Matrix(v));
+    return base;
+}
+
+Model& MainWindow::getInitState(const int idx)
+{
+    return drawer->getInitState(idx);
+}
+
+void MainWindow::setInitState(const int idx, const Model &init_state)
+{
+    drawer->setInitState(idx, init_state);
+}
+
+void MainWindow::toInitState()
+{
+    drawer->toInitState();
+}
+
+void MainWindow::updateAnimation()
+{
+    int idx = modelCnt - 1;
+    Vector3f center, scale, rotate;
+
+    center = Vector3f(0, 0, 0);
+    scale = Vector3f(1, 1, 1);
+    rotate = Vector3f(0, 0, 2);
+
+    drawer->editModel(idx, center, scale, rotate);
+    drawer->draw();
+}
+
 void MainWindow::runModel()
 {
-    int tempo = ui->spinBox_bpm->value();
-    Scene scene = drawer->getScene();
-    scene.runModel(tempo);  // calculate trajectories
+    if (!initState)
+        return;
 
-    Model pend = scene.getModel(1);
-    std::vector<int> cur_pos;
-    int verts_num = pend.getVertsCount();
-    for (int i = 0; i < verts_num; ++i)
-        cur_pos.push_back(pend.trajs[i].size() / 2);
+    int tempo = ui->spinBox_bpm->value(), idx = modelCnt - 1;
+    float t = 60.0 / tempo;
+    float g = 9.81, r = t * t / (4 * M_PI * M_PI) * g;
+    float len = drawer->getLen(idx);
+    float coef = -r / len;
+    Vector3f center, scale, rotate;
 
-    while (true)
-    {
-        connect(ui->pushButton_stop, SIGNAL(released()), this, SLOT(stopModel()));
-        cur_pos = drawer->runModel(tempo, cur_pos);
-    }
+    center = Vector3f(0, 0, 0);
+    scale = Vector3f(1, coef, 1);
+    rotate = Vector3f(0, 0, 0);
+
+    drawer->editModel(idx, center, scale, rotate);
+    drawer->draw();
+
+    running = true;
+
+    _timer = new QTimer();
+    _timer->setInterval(1);
+    connect(_timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
+    _timer->start();
 }
 
 void MainWindow::stopModel()
 {
-    drawer->stopModel();
+    _timer->stop();
+    delete _timer;
+
+    running = false;
+    toInitState();
 }
 
-
-
-// Sprite
-/*void MainWindow::changeSprite()
+void MainWindow::modelToInit()
 {
-    int idx = ui->comboBox_sprite->currentIndex();
-    Vector3f currentCenter = centersS[idx];
-
-    ui->le_smove_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_smove_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_smove_z->setText(std::to_string(currentCenter.z).c_str());
-
-    ui->le_sscale_x->setText("1");
-    ui->le_sscale_y->setText("1");
-    ui->le_sscale_z->setText("1");
-
-    ui->le_srotate_x->setText("0");
-    ui->le_srotate_y->setText("0");
-    ui->le_srotate_z->setText("0");
-
-    ui->le_smovement_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_smovement_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_smovement_z->setText(std::to_string(currentCenter.z).c_str());
-}*/
-
-/*void MainWindow::applySpriteChange()
-{
-    if (centersS.size() == 0)
-        return;
-
-    int idx = ui->comboBox_sprite->currentIndex();
-
-    Vector3f center, scale, rotate;
-
-    Vector3f endmovement;
-    float speed;
-
-    // For move
-    if (ui->le_smove_x->text().isEmpty() ||
-        ui->le_smove_y->text().isEmpty() ||
-        ui->le_smove_z->text().isEmpty())
-    {
-        center = Vector3f(centersS[idx]);
-    }
-    else
-    {
-        center = Vector3f(ui->le_smove_x->text().toFloat(),
-                          ui->le_smove_y->text().toFloat(),
-                          ui->le_smove_z->text().toFloat());
-    }
-
-    // For scale
-    if (ui->le_sscale_x->text().isEmpty() ||
-        ui->le_sscale_y->text().isEmpty() ||
-        ui->le_sscale_z->text().isEmpty())
-    {
-        scale = Vector3f(1, 1, 1);
-    }
-    else
-    {
-        scale = Vector3f(ui->le_sscale_x->text().toFloat(),
-                         ui->le_sscale_y->text().toFloat(),
-                         ui->le_sscale_z->text().toFloat());
-    }
-
-    // For rotate
-    if (ui->le_srotate_x->text().isEmpty() ||
-        ui->le_srotate_y->text().isEmpty() ||
-        ui->le_srotate_z->text().isEmpty())
-    {
-        rotate = Vector3f(0, 0, 0);
-    }
-    else
-    {
-        rotate = Vector3f(ui->le_srotate_x->text().toFloat(),
-                          ui->le_srotate_y->text().toFloat(),
-                          ui->le_srotate_z->text().toFloat());
-    }
-
-    // For speed
-    if (ui->le_speed->text().isEmpty())
-        speed = 0.1;
-    else
-        speed = ui->le_speed->text().toFloat();
-
-    // For end point of movement
-    if (ui->le_smovement_x->text().isEmpty() ||
-        ui->le_smovement_y->text().isEmpty() ||
-        ui->le_smovement_z->text().isEmpty())
-    {
-        drawer->editSprite(idx, center, scale, rotate);
-    }
-    else
-    {
-        endmovement = Vector3f(ui->le_smovement_x->text().toFloat(),
-                               ui->le_smovement_y->text().toFloat(),
-                               ui->le_smovement_z->text().toFloat());
-        if (ui->le_speed->text().isEmpty())
-            speed = 0.1;
-        else
-            speed = ui->le_speed->text().toFloat();
-
-        drawer->editSprite(idx, center, scale, rotate, endmovement, speed);
-    }
-
-    drawer->draw();
-}*/
-
-/*void MainWindow::cancelLineEditsSprite()
-{
-    int idx = ui->comboBox_sprite->currentIndex();
-    Vector3f currentCenter = centersS[idx];
-
-    ui->le_smove_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_smove_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_smove_z->setText(std::to_string(currentCenter.z).c_str());
-
-    ui->le_sscale_x->setText("1");
-    ui->le_sscale_y->setText("1");
-    ui->le_sscale_z->setText("1");
-
-    ui->le_srotate_x->setText("0");
-    ui->le_srotate_y->setText("0");
-    ui->le_srotate_z->setText("0");
-
-    ui->le_smovement_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_smovement_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_smovement_z->setText(std::to_string(currentCenter.z).c_str());
-}*/
+    drawer->toInitState();
+    initState = true;
+}
 
 
 

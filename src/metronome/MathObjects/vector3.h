@@ -24,6 +24,7 @@ public:
 
     Vector3<t>& operator =(const Vector3<t>&);
     bool operator ==(const Vector3<t>&);
+    bool operator !=(const Vector3<t>&);
     Vector3<t>  operator +(const Vector3<t>&) const;
     Vector3<t>  operator -(const Vector3<t>&) const;
     t           operator *(const Vector3<t>&) const;

@@ -17,11 +17,13 @@
 class Model
 {
 protected:
-    Vector3f center;
+    Vector3f center, base;
     std::vector<Vector3f> verts;
 
     std::vector<std::vector<Vector3i>> faces;
     std::vector<Vector3f> norms;
+
+    float length;
 
     QColor color;
 
@@ -45,6 +47,7 @@ public:
     // Faces
     int              getFacesCount();
     std::vector<int> face(const int&);
+    Vector3f         computeFace();
 
     // Normals
     int       getNormsCount();
@@ -55,8 +58,13 @@ public:
     QColor& getColor();
     void    setColor(const QColor&);
 
+    float    getLen();
+    Vector3f getBase();
+    void     setBase(const Vector3f& new_base);
+
     void scale(const Vector3f&);
     void rotate(const Vector3f&);
+    void rot_pend(const Vector3f&);
 
     void run(const int tempo);
     void stop();

@@ -45,6 +45,12 @@ bool Vector3<t>::operator ==(const Vector3<t>& v)
 }
 
 template<class t>
+bool Vector3<t>::operator !=(const Vector3<t>& v)
+{
+    return ((this->x != v.x) || (this->y != v.y) || (this->z != v.z));
+}
+
+template<class t>
 Vector3<t>  Vector3<t>::operator +(const Vector3<t>& v) const
 {
     return Vector3<t>(x + v.x, y + v.y, z + v.z);
