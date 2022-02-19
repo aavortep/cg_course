@@ -23,9 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->comboBox_model, SIGNAL(currentIndexChanged(QString)), SLOT(changeModel()));
     connect(ui->comboBox_light, SIGNAL(currentIndexChanged(QString)), SLOT(changeLight()));
 
-
-    //connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(constructorMode(bool)));
-
     modelCnt  = 2;
     spriteCnt = 0;
     lightCnt  = 0;
@@ -130,12 +127,9 @@ void MainWindow::initLables()
 // Model
 void MainWindow::changeModel()
 {
-    int idx = ui->comboBox_model->currentIndex();
-    Vector3f currentCenter = centersM[idx];
-
-    ui->le_mmove_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_mmove_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_mmove_z->setText(std::to_string(currentCenter.z).c_str());
+    ui->le_mmove_x->setText("0");
+    ui->le_mmove_y->setText("0");
+    ui->le_mmove_z->setText("0");
 
     ui->le_mscale_x->setText("1");
     ui->le_mscale_y->setText("1");
@@ -210,12 +204,9 @@ void MainWindow::applyModelChange()
 
 void MainWindow::cancelLineEditsModel()
 {
-    int idx = ui->comboBox_model->currentIndex();
-    Vector3f currentCenter = centersM[idx];
-
-    ui->le_lmove_x->setText(std::to_string(currentCenter.x).c_str());
-    ui->le_lmove_y->setText(std::to_string(currentCenter.y).c_str());
-    ui->le_lmove_z->setText(std::to_string(currentCenter.z).c_str());
+    ui->le_lmove_x->setText("0");
+    ui->le_lmove_y->setText("0");
+    ui->le_lmove_z->setText("0");
 
     ui->le_mscale_x->setText("1");
     ui->le_mscale_y->setText("1");
@@ -294,23 +285,10 @@ void MainWindow::updateAnimation()
 
 void MainWindow::runModel()
 {
-    if (!initState)
+    if (!initState || running)
         return;
 
     tempo = ui->spinBox_bpm->value();
-    /*float t = 60.0 / tempo;
-    float g = 9.81, r = t * t / (4 * M_PI * M_PI) * g;
-    float len = drawer->getLen(idx);*/
-
-    /*Vector3f center, scale, rotate;
-
-    center = Vector3f(0, 0, 0);
-    scale = Vector3f(1, coef, 1);
-    rotate = Vector3f(0, 0, 0);
-
-    drawer->editModel(idx, center, scale, rotate);
-    drawer->draw();*/
-
     running = true;
 
     _timer = new QTimer();
@@ -321,6 +299,9 @@ void MainWindow::runModel()
 
 void MainWindow::stopModel()
 {
+    if (!running)
+        return;
+
     _timer->stop();
     delete _timer;
 

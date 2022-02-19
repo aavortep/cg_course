@@ -2,7 +2,6 @@
 
 #include <QDebug>
 
-// Very smart function, meh...
 inline QRgb iColor(const QRgb& a, const float& i)
 {
     QColor c(a);
@@ -113,32 +112,29 @@ std::vector<int> Drawer::runModel(std::vector<int> cur_pos)
 
     // oscillation
     bool right = true, left = false;
-    //while (true)  // зацикливается!!!
+    for (int i = 0; i < verts_num; ++i)
     {
-        for (int i = 0; i < verts_num; ++i)
+        vert = pend.vert(i);
+        if (vert == pend.trajs[i][0])
         {
-            vert = pend.vert(i);
-            if (vert == pend.trajs[i][0])
-            {
-                right = true;
-                left = false;
-            }
-            else if (vert == pend.trajs[i][pend.trajs[i].size() - 1])
-            {
-                right = false;
-                left = true;
-            }
-
-            if (right)
-                --cur_pos[i];
-            else if (left)
-                ++cur_pos[i];
-            vert = pend.trajs[i][cur_pos[i]];
-            pend.setVert(i, vert);
+            right = true;
+            left = false;
+        }
+        else if (vert == pend.trajs[i][pend.trajs[i].size() - 1])
+        {
+            right = false;
+            left = true;
         }
 
-        draw();
+        if (right)
+            --cur_pos[i];
+        else if (left)
+            ++cur_pos[i];
+        vert = pend.trajs[i][cur_pos[i]];
+        pend.setVert(i, vert);
     }
+
+    draw();
 
     return cur_pos;
 }

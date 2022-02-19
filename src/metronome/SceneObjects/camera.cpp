@@ -59,7 +59,7 @@ Vector3f& Camera::getUp()
 // First person camera
 void Camera::rotateView(const float& speed)
 {
-    Vector3f vVector; // Полчим вектор взгляда
+    Vector3f vVector; // Получим вектор взгляда
     vVector.x = mView.x - mPos.x;
     vVector.y = mView.y - mPos.y;
     vVector.z = mView.z - mPos.z;
@@ -147,30 +147,6 @@ void Camera::update()
 
 Matrix Camera::lookAt(Vector3f& eye, Vector3f& center, Vector3f& up)
 {
-    /* OpenGl code
-    Vector3f f = (center - eye).normalize();
-    Vector3f s = (f ^ up).normalize();
-    Vector3f u = (s ^ f).normalize();
-
-    Matrix Result = Matrix::identity(4);
-
-    Result[0][0] = s.x;
-    Result[1][0] = s.y;
-    Result[2][0] = s.z;
-    Result[0][1] = u.x;
-    Result[1][1] = u.y;
-    Result[2][1] = u.z;
-    Result[0][2] = -f.x;
-    Result[1][2] = -f.y;
-    Result[2][2] = -f.z;
-    Result[3][0] = -(s * eye);
-    Result[3][1] = -(u * eye);
-    Result[3][2] =  (f *eye);
-
-    return Matrix(Result);
-    */
-
-    // Code from Habr
     Vector3f z = (eye - center).normalize();
     Vector3f x = (up ^ z).normalize();
     Vector3f y = (z ^ x).normalize();
@@ -188,7 +164,6 @@ Matrix Camera::lookAt(Vector3f& eye, Vector3f& center, Vector3f& up)
     }
 
     return Matrix(Minv * Tr);
-
 }
 
 Matrix Camera::viewport(const int& x, const int& y, const int& w, const int& h)
@@ -208,7 +183,6 @@ Matrix Camera::viewport(const int& x, const int& y, const int& w, const int& h)
 
 Matrix Camera::perspective(float const& fovy, float const& aspect, float const& zNear, float const& zFar)
 {
-    // OpenGl realization
     float rad = (fovy / 2) * M_PI / 180;
     float tanHalfFovy = tan(rad);
 
