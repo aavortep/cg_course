@@ -196,6 +196,11 @@ void Drawer::toInitState()
     draw();
 }
 
+float Drawer::computeTan()
+{
+    return scene.computeTan();
+}
+
 
 
 // Sprite

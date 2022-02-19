@@ -735,7 +735,7 @@ QPushButton:pressed {
      <number>20</number>
     </property>
     <property name="maximum">
-     <number>150</number>
+     <number>400</number>
     </property>
     <property name="value">
      <number>120</number>

@@ -69,6 +69,7 @@ public:
     void run(const int tempo);
     void stop();
     bool isRunning();
+    float computeTan();
 
     // oscillation trajectories
     std::vector<std::vector<Vector3f>> trajs;

@@ -304,3 +304,11 @@ bool Model::isRunning()
 {
     return isSprite;
 }
+
+float Model::computeTan()
+{
+    if (verts[5].x != 0)
+        return -verts[5].y / verts[5].x;
+    else
+        return 1000000;
+}

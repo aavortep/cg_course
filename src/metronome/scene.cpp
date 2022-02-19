@@ -91,6 +91,11 @@ void Scene::setInitState(const int idx, const Model &init_state)
     inits[idx] = init_state;
 }
 
+float Scene::computeTan()
+{
+    return models[1].computeTan();
+}
+
 
 // Sprites
 int     Scene::countSprites()

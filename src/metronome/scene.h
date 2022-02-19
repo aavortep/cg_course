@@ -33,6 +33,7 @@ public:
     void     setBase(const int idx, const Vector3f& new_base);
     Model&   getInitState(const int idx);
     void     setInitState(const int idx, const Model& init_state);
+    float     computeTan();
 
 
     // Sprites

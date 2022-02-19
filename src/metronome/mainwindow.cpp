@@ -266,10 +266,27 @@ void MainWindow::updateAnimation()
 {
     int idx = modelCnt - 1;
     Vector3f center, scale, rotate;
+    float coef = tempo / 20;
 
     center = Vector3f(0, 0, 0);
     scale = Vector3f(1, 1, 1);
-    rotate = Vector3f(0, 0, 2);
+
+    float tg = drawer->computeTan();
+    if (tg <= sqrt(3) && tg >= 0)
+    {
+        left = true;
+        right = false;
+    }
+    else if (tg >= -sqrt(3) && tg <= 0)
+    {
+        right = true;
+        left = false;
+    }
+
+    if (right)
+        rotate = Vector3f(0, 0, 2 * coef);
+    if (left)
+        rotate = Vector3f(0, 0, -2 * coef);
 
     drawer->editModel(idx, center, scale, rotate);
     drawer->draw();
@@ -280,19 +297,19 @@ void MainWindow::runModel()
     if (!initState)
         return;
 
-    int tempo = ui->spinBox_bpm->value(), idx = modelCnt - 1;
-    float t = 60.0 / tempo;
+    tempo = ui->spinBox_bpm->value();
+    /*float t = 60.0 / tempo;
     float g = 9.81, r = t * t / (4 * M_PI * M_PI) * g;
-    float len = drawer->getLen(idx);
-    float coef = -r / len;
-    Vector3f center, scale, rotate;
+    float len = drawer->getLen(idx);*/
+
+    /*Vector3f center, scale, rotate;
 
     center = Vector3f(0, 0, 0);
     scale = Vector3f(1, coef, 1);
     rotate = Vector3f(0, 0, 0);
 
     drawer->editModel(idx, center, scale, rotate);
-    drawer->draw();
+    drawer->draw();*/
 
     running = true;
 

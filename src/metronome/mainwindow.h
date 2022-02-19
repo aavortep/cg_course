@@ -37,6 +37,8 @@ private:
 
     bool initState = true;
     bool running = false;
+    bool right = true, left = false;
+    int tempo;
 
     std::vector<Vector3f> centersM;
     std::vector<Vector3f> centersS;
