@@ -197,6 +197,11 @@ float Drawer::computeTan()
     return scene.computeTan();
 }
 
+int Drawer::getVertsCnt()
+{
+    return scene.getVertsCnt();
+}
+
 
 
 // Sprite

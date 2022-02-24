@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <ctime>
 
 int frames = 0;
 auto frameTime = 0;
@@ -11,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Metronome");
-    this->setWindowIcon(QIcon("icon_speedrun.png"));
+    this->setWindowIcon(QIcon("icon2.png"));
 
     ui->centralwidget->setStyleSheet("QWidget {background: rgba(50, 50, 50, 255);}");
 
@@ -38,7 +39,14 @@ MainWindow::MainWindow(QWidget *parent)
     centersM.push_back(center);
     pend_base = computeBase();
     ui->comboBox_model->addItem("metronome");
-    drawer->draw();
+    //unsigned int start_time, end_time;
+    //int n = 10;
+    //start_time = clock();
+    //for (int i = 0; i < n; ++i)
+        drawer->draw();
+    //end_time = clock();
+    //auto elapsed_time = (end_time - start_time) / n;
+    //qDebug() << drawer->getVertsCnt() << elapsed_time;
 }
 
 MainWindow::~MainWindow()
@@ -194,7 +202,7 @@ void MainWindow::applyModelChange()
                               ui->le_mrotate_z->text().toFloat());
         }
 
-        if (center != Vector3f(centersM[0]) || scale != Vector3f(1, 1, 1) || rotate != Vector3f(0, 0, 0))
+        if (rotate != Vector3f(0, 0, 0))
             initState = false;
 
         drawer->editModel(idx, center, scale, rotate);
@@ -263,12 +271,13 @@ void MainWindow::updateAnimation()
     scale = Vector3f(1, 1, 1);
 
     float tg = drawer->computeTan();
-    if (tg <= sqrt(3) && tg >= 0)
+    float ampl = 70.0 * M_PI / 180.0;
+    if (tg <= tan(ampl) && tg >= 0)
     {
         left = true;
         right = false;
     }
-    else if (tg >= -sqrt(3) && tg <= 0)
+    else if (tg >= -tan(ampl) && tg <= 0)
     {
         right = true;
         left = false;
@@ -279,7 +288,7 @@ void MainWindow::updateAnimation()
     if (left)
         rotate = Vector3f(0, 0, -2 * coef);
 
-    drawer->editModel(idx, center, scale, rotate);
+    drawer->rotPend(idx, rotate);
     drawer->draw();
 }
 

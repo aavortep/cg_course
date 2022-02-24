@@ -116,7 +116,7 @@ std::vector<int> Model::face(const int& idx)
 
 Vector3f Model::computeFace()
 {
-    Vector3f p1 = verts[5], p2 = verts[6], p3 = verts[8], res;
+    Vector3f p1 = verts[5], p2 = verts[7], p3 = verts[9], res;
     float a, b, c;
     a = (p2.y - p1.y) * (p3.z - p1.z) - (p3.y - p1.y) * (p2.z - p1.z);
     b = (p3.x - p1.x) * (p2.z - p1.z) - (p2.x - p1.x) * (p3.z - p1.z);
@@ -242,7 +242,9 @@ void Model::rotate(const Vector3f& angle)
 void Model::rot_pend(const Vector3f& angle)
 {
     float tmp_x, tmp_y;
-    Vector3f base = Vector3f(0, 0.805989, 0.362673);;
+    Vector3f base = Vector3f((verts[0].x + verts[2].x) / 2,
+                             (verts[0].y + verts[2].y) / 2,
+                             (verts[0].z + verts[2].z) / 2);
     for (int i = 0; i < verts.size(); ++i)
     {
         tmp_x = (verts[i].x - base.x) * cos(angle.z * M_PI / 180) -

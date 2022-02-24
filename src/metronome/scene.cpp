@@ -96,6 +96,11 @@ float Scene::computeTan()
     return models[1].computeTan();
 }
 
+int Scene::getVertsCnt()
+{
+    return models[0].getVertsCount();
+}
+
 
 // Sprites
 int     Scene::countSprites()

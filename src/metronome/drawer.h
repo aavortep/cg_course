@@ -78,6 +78,7 @@ public:
     void setInitState(const int idx, const Model& init_state);
     void toInitState();
     float computeTan();
+    int getVertsCnt();
 
     // Sprite
     void addSprite(Vector3f&, Vector3f&, QString&, QColor&, Vector3f&, float&);
